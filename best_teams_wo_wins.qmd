@@ -1,0 +1,112 @@
+---
+title: "best_teams_wo_wins"
+format: html
+editor: visual
+---
+
+```{r}
+library(devtools)
+load_all("scoutR") # source: https://github.com/GKrotkov/scoutR
+```
+
+First, I want a list of every team that has never won an official event.
+
+```{r}
+all_team_awards <- readRDS("scoutR/data/all_team_awards.rds")
+
+any_wins <- function(team_awards){
+    if(nrow(team_awards) == 0) return(FALSE)
+    return(sum(team_awards$award_type == 1) > 0)
+}
+
+awards_w_wins <- all_team_awards[sapply(all_team_awards, any_wins)]
+
+for (i in seq_along(awards_w_wins)){
+    awards_w_wins[[i]]$id <- names(awards_w_wins)[i]
+}
+wins <- Reduce(rbind, awards_w_wins)
+wins <- wins[wins$award_type == 1, ]
+
+# now we need to filter out offseasons
+wins$official <- sapply(wins$event_key, is_event_key_official)
+
+teams_w_official_wins <- unique(wins[wins$official, ]$id)
+
+save(teams_w_official_wins, file = "teams_w_official_wins.rda")
+
+```
+
+Now that we have a list of every team that has won an official event, we want to all the teams that have signed up for the 2025 season that do not appear on that list.
+
+```{r}
+rm(list = ls())
+load("teams_w_official_wins.rda")
+
+# a candidate must be registered for 2025
+teams_2025 <- c()
+for (i in 0:22){
+    teams_2025 <- c(teams_2025, teams(i, year = 2025, keys = TRUE))
+}
+
+# a candidate must not have won any official events
+candidates <- setdiff(teams_2025, teams_w_official_wins)
+
+# lastly, each candidate needs to have participated in 3 straight years.
+participation_eligibility <- function(id){
+    return(all(c(2022, 2023, 2024) %in% team_participation_years(id)))
+}
+candidates <- candidates[sapply(candidates, participation_eligibility)]
+
+candidates <- id2int(candidates)
+save(candidates, file = "candidates.rda")
+write_csv(data.frame(candidates), "eligible_teams.csv")
+```
+
+Now that we have all the candidates, let's retrieve their statbotics performances.
+
+```{r}
+rm(list = ls())
+load("candidates.rda")
+sb_data <- lapply(candidates, read_team_statbotics)
+save(sb_data, file = "sb_data.rda")
+```
+
+... and reformat their statbotics performances
+
+```{r}
+rm(list = ls())
+load("sb_data.rda")
+
+get_attributes <- function(team){
+    return(data.frame(
+        number = team$team, 
+        #name = team$name, 
+        #state = team$state, 
+        #country = team$country, 
+        #rookie_year = team$rookie_year, 
+        epa = team$norm_epa
+        #epa_recent = team$norm_epa_recent
+        #epa_mean = team$norm_epa_mean 
+        #epa_max = team$norm_epa_max
+        #winrate = team$winrate
+    ))
+}
+
+sb_data <- lapply(sb_data, get_attributes)
+sb_data <- Reduce(rbind, sb_data)
+sb_data <- sb_data[order(sb_data$epa, decreasing = TRUE), ]
+write_csv(sb_data, "teams_wo_official_wins_by_epa.csv")
+```
+
+And add some visualization:
+
+```{r}
+sb_data$number <- factor(sb_data$number)
+
+ggplot(head(sb_data, 40), aes(x = reorder(number, epa), y = epa)) + 
+  geom_bar(stat = "identity", fill = "purple", color = "black") + 
+  coord_flip() + 
+  labs(x = "Team Number", y = "Normalized EPA (end of 2024)", 
+       title = "Teams without official wins by 2024-end EPA", 
+       subtitle = "Top 40")
+```
