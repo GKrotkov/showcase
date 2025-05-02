@@ -1,0 +1,77 @@
+avg_events,region,n_teams,district
+1.69,Alabama,13,FALSE
+1.44,Alberta,9,FALSE
+1,Argentina,1,FALSE
+1.59,Arizona,46,FALSE
+1.67,Arkansas,12,FALSE
+1,Armenia,1,FALSE
+1.1,Australia,40,FALSE
+1,Azerbaijan,1,FALSE
+1,Belize,1,FALSE
+1.33,Brazil,69,FALSE
+1.2,British Columbia,20,FALSE
+1,Bulgaria,1,FALSE
+1.91,California,289,FALSE
+1.54,China,41,FALSE
+1.56,Chinese Taipei,36,FALSE
+2.5,CHS,111,TRUE
+1,Colombia,1,FALSE
+1.54,Colorado,37,FALSE
+1,Croatia,1,FALSE
+1,Cyprus,1,FALSE
+1,Czech Republic,2,FALSE
+1,Dominican Republic,4,FALSE
+2.5,FiT,187,TRUE
+1.63,Florida,84,FALSE
+2.33,FMA,165,TRUE
+1,France,3,FALSE
+2.62,Georgia,74,TRUE
+1,Greece,1,FALSE
+1.71,Hawaii,24,FALSE
+1,Hungary,1,FALSE
+1.48,Idaho,21,FALSE
+1.66,Illinois,58,FALSE
+2,India,6,FALSE
+2.61,Indiana,71,TRUE
+1.54,Iowa,24,FALSE
+2.74,Israel,62,TRUE
+1,Japan,6,FALSE
+1.54,Kansas,24,FALSE
+1.4,Kentucky,10,FALSE
+1,Kosovo,1,FALSE
+1.55,Louisiana,33,FALSE
+1.53,Mexico,86,FALSE
+2.35,Michigan,525,TRUE
+1.54,Minnesota,189,FALSE
+1.38,Mississippi,16,FALSE
+1.69,Missouri,67,FALSE
+2,Montana,1,FALSE
+2.57,NE,190,TRUE
+1.5,Nebraska,2,FALSE
+2,Netherlands,2,FALSE
+1.48,Nevada,27,FALSE
+1.65,New York,150,FALSE
+1.25,NH,4,FALSE
+2.47,North Carolina,86,TRUE
+1.88,North Dakota,8,FALSE
+1.85,Ohio,62,FALSE
+1.69,Oklahoma,39,FALSE
+2.78,Ontario,130,TRUE
+1,Panama,3,FALSE
+1,Philippines,1,FALSE
+2.45,PNW,132,TRUE
+1.25,Poland,4,FALSE
+1.29,Québec,34,FALSE
+1,Singapore,1,FALSE
+1,South Africa,1,FALSE
+2.82,South Carolina,34,TRUE
+2,South Dakota,1,FALSE
+2,Switzerland,1,FALSE
+1,Syria,1,FALSE
+1.62,Tennessee,24,FALSE
+1.23,Türkiye,186,FALSE
+1.5,United Kingdom,2,FALSE
+1.44,Utah,16,FALSE
+2,West Virginia,3,FALSE
+1.84,Wisconsin,69,FALSE
+1.5,Wyoming,2,FALSE
