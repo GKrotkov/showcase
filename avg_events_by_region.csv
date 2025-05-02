@@ -23,7 +23,7 @@ avg_events,region,n_teams,district
 1,Dominican Republic,4,FALSE
 2.5,FiT,187,TRUE
 1.63,Florida,84,FALSE
-2.33,FMA,165,TRUE
+2.49,FMA,139,TRUE
 1,France,3,FALSE
 2.62,Georgia,74,TRUE
 1,Greece,1,FALSE
@@ -73,5 +73,6 @@ avg_events,region,n_teams,district
 1.5,United Kingdom,2,FALSE
 1.44,Utah,16,FALSE
 2,West Virginia,3,FALSE
+1.46,West/Central PA,26,FALSE
 1.84,Wisconsin,69,FALSE
 1.5,Wyoming,2,FALSE

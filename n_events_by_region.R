@@ -30,6 +30,15 @@ reefscape_teams <- reefscape_teams |>
         )
     )
 
+# fix region for non-FMA PA teams
+pa_teams <- reefscape_teams$team_number[reefscape_teams$state_prov == "Pennsylvania"]
+fma_teams <- district_teams(paste0(YEAR, "fma"), keys = TRUE)
+fma_teams <- as.numeric(substr(fma_teams, 4, nchar(fma_teams)))
+wpa_teams <- setdiff(pa_teams, fma_teams)
+
+reefscape_teams$region[reefscape_teams$team_number %in% wpa_teams] <- 
+    "West/Central PA"
+
 regions <- reefscape_teams |>
     dplyr::select(city, country, key, name, nickname, rookie_year, state_prov, 
                   team_number, region)
