@@ -21,11 +21,11 @@ matches_avg_notes <- function(match_data){
     match_data <- match_data |>
         mutate(
             red_notes = red_teleopSpeakerNoteCount + red_teleopAmpNoteCount +
-                red_teleopSpeakerNoteAmplifiedCount +
-                (red_endGameNoteInTrapPoints / 5),
+                red_teleopSpeakerNoteAmplifiedCount + red_autoAmpNoteCount + 
+                red_autoSpeakerNoteCount + (red_endGameNoteInTrapPoints / 5),
             blue_notes = blue_teleopSpeakerNoteCount + blue_teleopAmpNoteCount +
-                blue_teleopSpeakerNoteAmplifiedCount +
-                (blue_endGameNoteInTrapPoints / 5)
+                blue_teleopSpeakerNoteAmplifiedCount + blue_autoAmpNoteCount + 
+                blue_autoSpeakerNoteCount + (blue_endGameNoteInTrapPoints / 5)
         )
 
     result <- c(
@@ -89,35 +89,61 @@ viz <- viz |>
     mutate(lower = avg - sd, upper = avg + sd, 
            level = factor(level, levels = c("qual", "playoff")))
 
-# three options for the plot, increasing in complexity and information
-
 ggplot(viz, aes(x = week, y = avg, color = level)) +
-    geom_point() + 
-    geom_line() +
-    ylim(0, 20) +
+    geom_errorbar(aes(ymin = lower, ymax = upper), 
+                  width = 0.5, position = "dodge", 
+                  linewidth = 0.75) +
+    geom_line(position = position_dodge(width = 0.5), 
+              linewidth = 0.75) +
+    geom_point(position = position_dodge(width = 0.5)) +
     geom_hline(yintercept = 18, lty = 2, col = "black") + 
-    annotate("text", x = 1.5, y = 18.8, label = "Melody RP Threshold") +
-    labs(title = "Crescendo Alliance Performance",
+    annotate("text", x = 1.5, y = 19, label = "Melody") +
+    labs(title = "How many notes did alliances score in Crescendo?",
+         subtitle = "Bounds show +/- 1 SD",
          x = "Week", y = "Average Notes") +
     theme_bw()
 
-ggplot(viz, aes(x = week, y = avg, color = level)) +
-    geom_crossbar(aes(ymin = lower, ymax = upper), 
-                  width = 0.4, position = "dodge") +
-    geom_hline(yintercept = 18, lty = 2, col = "black") + 
-    annotate("text", x = 1.5, y = 18.8, label = "Melody RP Threshold") +
-    labs(title = "Crescendo Alliance Performance",
-         subtitle = "Bounds represent +/- 1 SD",
-         x = "Week", y = "Average Notes") +
-    theme_bw()
+########################
+#### plot graveyard ####
+########################
 
-ggplot(viz, aes(x = week, y = avg, color = level)) +
-    geom_crossbar(aes(ymin = lower, ymax = upper), 
-                  width = 0.2, position = "dodge") +
-    geom_line() +
-    geom_hline(yintercept = 18, lty = 2, col = "black") + 
-    annotate("text", x = 1.5, y = 18.8, label = "Melody RP Threshold") +
-    labs(title = "Crescendo Alliance Performance",
-         subtitle = "Bounds represent +/- 1 SD",
-         x = "Week", y = "Average Notes") +
-    theme_bw()
+# ggplot(viz, aes(x = week, y = avg, color = level)) +
+#     geom_point() + 
+#     geom_line() +
+#     geom_hline(yintercept = 18, lty = 2, col = "black") + 
+#     annotate("text", x = 2, y = 18.8, label = "RP Threshold") +
+#     labs(title = "Crescendo Alliance Performance",
+#          x = "Week", y = "Average Notes") +
+#     theme_bw()
+# 
+# ggplot(viz, aes(x = week, y = avg, color = level)) +
+#     geom_crossbar(aes(ymin = lower, ymax = upper), 
+#                   width = 0.4, position = "dodge") +
+#     geom_hline(yintercept = 18, lty = 2, col = "black") + 
+#     annotate("text", x = 2, y = 18.8, label = "RP Threshold") +
+#     labs(title = "Crescendo Alliance Performance",
+#          subtitle = "Bounds represent +/- 1 SD",
+#          x = "Week", y = "Average Notes") +
+#     theme_bw()
+# 
+# ggplot(viz, aes(x = week, y = avg, color = level)) +
+#     geom_crossbar(aes(ymin = lower, ymax = upper), 
+#                   width = 0.2, position = "dodge") +
+#     geom_line() +
+#     geom_hline(yintercept = 18, lty = 2, col = "black") + 
+#     annotate("text", x = 1.5, y = 18.8, label = "RP Threshold") +
+#     labs(title = "Crescendo Alliance Performance",
+#          subtitle = "Bounds represent +/- 1 SD",
+#          x = "Week", y = "Average Notes") +
+#     theme_bw()
+# 
+# ggplot(viz, aes(x = week, y = avg)) + 
+#     geom_errorbar(aes(ymin = lower, ymax = upper), width = 0.3) + 
+#     geom_line() +
+#     facet_wrap(~ level) +
+#     geom_hline(yintercept = 18, lty = 2, col = "red") + 
+#     annotate("text", x = 2, y = 20, label = "RP Threshold") +
+#     labs(title = "How many notes did alliances score in Crescendo?", 
+#          subtitle = "Bounds represent +/- 1 SD", 
+#          x = "Week", y = "Average Notes") +
+#     theme_bw()
