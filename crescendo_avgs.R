@@ -82,11 +82,14 @@ for (i in 1:6){
 #######################
 
 viz <- tibble(week = 1:6, qual_avg = qual_avg, qual_sd = qual_sd, 
-              playoff_avg, playoff_sd = playoff_sd) 
+              playoff_avg, playoff_sd = playoff_sd)
 
 viz <- viz |>
     pivot_longer(-week, names_to = c("level", ".value"), names_sep = "_") |>
-    mutate(lower = avg - sd, upper = avg + sd)
+    mutate(lower = avg - sd, upper = avg + sd, 
+           level = factor(level, levels = c("qual", "playoff")))
+
+# three options for the plot, increasing in complexity and information
 
 ggplot(viz, aes(x = week, y = avg, color = level)) +
     geom_point() + 
