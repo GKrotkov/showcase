@@ -41,7 +41,9 @@ event_pridges <- bind_rows(event_pridges)
 
 team_max_pridges <- event_pridges |>
     group_by(team) |>
-    summarize(pridge_max = max(pridge))
+    arrange(desc(pridge)) |>
+    summarize(pridge_max = max(pridge), 
+              event = head(event, 1))
 
 cmp_divs <- lapply(
     div_keys,  
@@ -79,4 +81,9 @@ for (i in seq_along(div_max_pridges)){
     
     ggsave(filename = paste0("plots/", "2026", div_names[i], ".png"), 
            height = 12, units = "in")
+}
+
+for (i in seq_along(div_max_pridges)){
+    write_csv(div_max_pridges[[i]], 
+              file = paste0("div_max_pridges/", div_keys[i], ".csv"))
 }
